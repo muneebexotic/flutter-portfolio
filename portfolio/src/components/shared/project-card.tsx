@@ -78,17 +78,17 @@ function ProjectCard({ project, onClick, className }: ProjectCardProps) {
       </div>
 
       {/* Content */}
-      <div className="flex flex-1 flex-col p-6 pt-2">
-        <h3 className="text-lg font-semibold text-card-foreground">
+      <div className="flex flex-1 flex-col p-6 pt-4">
+        <h3 className="text-lg font-semibold text-card-foreground line-clamp-1">
           {truncatedTitle}
         </h3>
         
-        <p className="mt-2 flex-1 text-sm text-muted-foreground">
+        <p className="mt-2 text-sm text-muted-foreground line-clamp-2 min-h-[2.5rem]">
           {truncatedDescription}
         </p>
 
-        {/* Tech Stack Badges */}
-        <div className="mt-4 flex flex-wrap gap-2">
+        {/* Tech Stack Badges - show 4 badges + overflow count */}
+        <div className="mt-4 flex flex-wrap gap-2 h-[4.5rem] content-start overflow-hidden">
           {techStack.slice(0, 4).map((tech) => (
             <Badge key={tech} variant="secondary">
               {tech}
@@ -99,8 +99,8 @@ function ProjectCard({ project, onClick, className }: ProjectCardProps) {
           )}
         </div>
 
-        {/* Links */}
-        <div className="mt-4 flex items-center gap-3">
+        {/* Links - pushed to bottom */}
+        <div className="mt-auto pt-4 flex items-center gap-3 min-h-[2.5rem]">
           {playStoreUrl && (
             <a
               href={playStoreUrl}

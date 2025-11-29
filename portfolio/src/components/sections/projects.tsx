@@ -119,10 +119,12 @@ function Projects({ className }: ProjectsProps) {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: prefersReducedMotion ? 1 : 0.9 }}
                 transition={{ duration: prefersReducedMotion ? 0 : 0.3 }}
+                className="h-full"
               >
                 <ProjectCard
                   project={project}
                   onClick={() => handleProjectClick(project)}
+                  className="h-full"
                 />
                 
                 {/* Mobile Accordion Content */}
