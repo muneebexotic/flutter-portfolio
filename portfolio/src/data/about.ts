@@ -16,7 +16,7 @@ When I'm not coding, you'll find me contributing to open-source projects,
 writing technical articles, or exploring the latest in mobile development. 
 I believe in writing code that's not just functional, but maintainable 
 and delightful to work with.`,
-  avatarUrl: '/images/avatar.jpg',
+  avatarUrl: '/images/avatar.png',
   avatarAlt: 'Muneeb Usman - Flutter Developer',
   socialLinks: [
     {
