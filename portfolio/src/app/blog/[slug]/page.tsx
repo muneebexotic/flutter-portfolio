@@ -84,7 +84,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         coverImage={post.coverImage}
         slug={params.slug}
       />
-      <main className="min-h-screen bg-background py-20">
+      <main className="min-h-screen bg-background pt-[calc(var(--header-height)+2rem)] pb-20">
         <article className="container mx-auto max-w-3xl px-4">
           {/* Back Link */}
           <Link

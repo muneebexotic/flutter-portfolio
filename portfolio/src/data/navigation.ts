@@ -19,7 +19,7 @@ export const navigationLinks: NavLink[] = [
   },
   {
     label: 'Blog',
-    href: '#blog',
+    href: '/blog',
   },
   {
     label: 'Contact',

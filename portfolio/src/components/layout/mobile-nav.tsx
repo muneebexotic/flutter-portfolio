@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { navigationLinks } from "@/data/navigation";
 
@@ -17,6 +19,8 @@ interface MobileNavProps {
 
 export function MobileNav({ activeSection, onNavClick }: MobileNavProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
 
   // Lock body scroll when drawer is open
   useEffect(() => {
@@ -111,24 +115,54 @@ export function MobileNav({ activeSection, onNavClick }: MobileNavProps) {
             aria-label="Mobile navigation"
           >
             <ul className="flex flex-col gap-2">
-              {navigationLinks.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    onClick={(e) => handleLinkClick(e, link.href)}
-                    className={cn(
-                      "block px-4 py-3 text-base font-medium rounded-md transition-colors",
-                      "hover:bg-accent hover:text-accent-foreground",
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                      activeSection === link.href
-                        ? "text-primary bg-accent"
-                        : "text-muted-foreground"
-                    )}
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
+              {navigationLinks.map((link) => {
+                const isExternal = !link.href.startsWith("#");
+                const isActive = isExternal
+                  ? pathname === link.href || pathname.startsWith(link.href + "/")
+                  : activeSection === link.href;
+
+                if (isExternal) {
+                  return (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        onClick={() => setIsOpen(false)}
+                        className={cn(
+                          "block px-4 py-3 text-base font-medium rounded-md transition-colors",
+                          "hover:bg-accent hover:text-accent-foreground",
+                          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                          isActive
+                            ? "text-primary bg-accent"
+                            : "text-muted-foreground"
+                        )}
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  );
+                }
+
+                const anchorHref = isHomePage ? link.href : `/${link.href}`;
+
+                return (
+                  <li key={link.href}>
+                    <a
+                      href={anchorHref}
+                      onClick={(e) => handleLinkClick(e, link.href)}
+                      className={cn(
+                        "block px-4 py-3 text-base font-medium rounded-md transition-colors",
+                        "hover:bg-accent hover:text-accent-foreground",
+                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                        isActive
+                          ? "text-primary bg-accent"
+                          : "text-muted-foreground"
+                      )}
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </motion.nav>
         )}

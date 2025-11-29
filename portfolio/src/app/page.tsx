@@ -55,7 +55,7 @@ const Contact = dynamic(
  */
 export default function Home() {
   return (
-    <main id="main-content" className="flex min-h-screen flex-col">
+    <main id="main-content" className="flex min-h-screen flex-col pt-[var(--header-height)]">
       {/* Hero section - loaded immediately (above the fold) */}
       <Hero />
       
