@@ -1,12 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { truncateText } from "@/lib/utils";
 import { cardHover, reducedMotionCardHover } from "@/lib/animations";
 import { usePrefersReducedMotion } from "@/hooks";
 import { Badge } from "@/components/ui/badge";
-import { PhoneFrame } from "./phone-frame";
 import { trackProjectCardClick, trackExternalLinkClick } from "@/lib/analytics";
 import type { Project } from "@/types";
 
@@ -66,12 +66,14 @@ function ProjectCard({ project, onClick, className }: ProjectCardProps) {
       }}
       aria-label={`View details for ${title}`}
     >
-      {/* Phone Frame with Screenshot */}
-      <div className="flex justify-center p-6 pb-4">
-        <PhoneFrame
-          screenshot={heroImage}
+      {/* Hero Image */}
+      <div className="relative aspect-video overflow-hidden">
+        <Image
+          src={heroImage}
           alt={`${title} app screenshot`}
-          className="h-64 w-auto"
+          fill
+          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>
 

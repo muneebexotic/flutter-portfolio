@@ -2,100 +2,168 @@ import { Project } from '@/types';
 
 export const projects: Project[] = [
   {
-    id: 'fintrack-pro',
-    title: 'FinTrack Pro',
-    shortDescription:
-      'Personal finance management app with expense tracking and budget insights.',
-    fullDescription:
-      'FinTrack Pro is a comprehensive personal finance app built with Flutter. Features include expense categorization, budget planning, financial goal tracking, and detailed analytics with beautiful charts. Supports multiple currencies and bank sync.',
-    heroImage: '/images/projects/fintrack-hero.png',
+    id: 'ai-chatbot-app',
+    title: 'AI Chatbot App',
+    shortDescription: 'Cross-platform AI chatbot with image generation and voice integration',
+    fullDescription: 'A feature-rich Flutter application that provides conversational AI capabilities powered by Google Gemini. Users can engage in real-time chat conversations, generate AI images using multiple providers (DALL-E, Stable Diffusion, Hugging Face), and interact via voice with speech-to-text and text-to-speech functionality. The app includes persistent chat history, multiple AI personas, subscription-based premium features, and seamless cloud sync across devices.',
+    heroImage: '/images/projects/ai-chatbot-hero.png',
     screenshots: [
-      '/images/projects/fintrack-1.png',
-      '/images/projects/fintrack-2.png',
-      '/images/projects/fintrack-3.png',
+      '/images/projects/ai-chatbot-chat.jpg',
+      '/images/projects/ai-chatbot-image-gen.jpg',
+      '/images/projects/ai-chatbot-settings.jpg',
+      '/images/projects/ai-chatbot-subscription.jpg'
     ],
-    techStack: ['Flutter', 'Dart', 'Firebase', 'Riverpod', 'FL Chart'],
+    techStack: [
+      'Flutter',
+      'Dart',
+      'Firebase Auth',
+      'Cloud Firestore',
+      'Firebase Storage',
+      'Google Gemini API',
+      'OpenAI DALL-E',
+      'Stability AI',
+      'Hugging Face',
+      'Cloudinary',
+      'Provider',
+      'Speech-to-Text',
+      'Flutter TTS',
+      'In-App Purchase'
+    ],
     features: [
-      'Expense categorization with AI',
-      'Budget planning and alerts',
-      'Multi-currency support',
-      'Bank sync integration',
-      'Detailed financial reports',
+      'Real-time AI chat with Google Gemini',
+      'AI image generation (DALL-E, Stable Diffusion)',
+      'Voice input & text-to-speech responses',
+      'Persistent chat history with cloud sync',
+      'Multiple AI personas/characters',
+      'Image upload and analysis',
+      'Google Sign-In authentication',
+      'Dark/light theme support',
+      'Subscription system for premium features',
+      'Offline capability with sync',
+      'Cross-platform (Android, iOS, Web, Desktop)'
     ],
-    playStoreUrl: 'https://play.google.com/store/apps/details?id=com.fintrack',
-    appStoreUrl: 'https://apps.apple.com/app/fintrack-pro/id123456789',
-    githubUrl: 'https://github.com/username/fintrack-pro',
-    startDate: '2023-06',
-    endDate: '2024-01',
+    playStoreUrl: 'https://play.google.com/store/apps/details?id=your.app.id',
+    appStoreUrl: 'https://apps.apple.com/app/your-app-id',
+    githubUrl: 'https://github.com/muneebexotic/ai_chatbot_app',
+    startDate: '2024-01',
+    endDate: '2024-06',
     isFeatured: true,
     category: 'Personal',
     metrics: {
-      downloads: '50K+',
-      rating: 4.8,
-      users: '25K+ active users',
-    },
+      downloads: '1K+',
+      rating: 4.5
+    }
+  },
+
+  {
+    id: 'neon-pulse-flappy-bird',
+    title: 'Neon Pulse Flappy Bird',
+    shortDescription: 'A cyberpunk-themed Flappy Bird game with neon effects, energy pulse mechanics, and global leaderboards.',
+    fullDescription: 'Neon Pulse reimagines the classic Flappy Bird within a vibrant cyberpunk universe. Navigate through digital barriers and laser grids while using energy pulses to temporarily disable obstacles. Features progressive difficulty scaling, power-ups (Shield, Score Multiplier, Slow Motion), unlockable bird skins with unique particle trails, a real-time global leaderboard with Firebase, comprehensive accessibility support, and offline-first architecture with automatic score syncing.',
+    heroImage: '/images/projects/neon-pulse-hero.png',
+    screenshots: [
+      '/images/projects/neon-pulse-menu.jpg',
+      '/images/projects/neon-pulse-gameplay.jpg',
+      '/images/projects/neon-pulse-shield.jpg',
+      '/images/projects/neon-pulse-customization.jpg',
+      '/images/projects/neon-pulse-leaderboard.jpg',
+      '/images/projects/neon-pulse-achievements.jpg',
+      '/images/projects/neon-pulse-settings.jpg'
+    ],
+    techStack: [
+      'Flutter',
+      'Dart',
+      'Flame Engine',
+      'Firebase Core',
+      'Firebase Auth',
+      'Cloud Firestore',
+      'Google Sign-In',
+      'Provider',
+      'Audioplayers',
+      'SharedPreferences',
+      'Flutter Local Notifications',
+      'Connectivity Plus'
+    ],
+    features: [
+      'Cyberpunk aesthetic with neon glow effects and parallax backgrounds',
+      'Energy pulse mechanic to disable obstacles temporarily',
+      'Progressive difficulty with 3 obstacle types (Digital Barriers, Laser Grids, Floating Platforms)',
+      'Power-up system: Shield, Score Multiplier, Slow Motion',
+      'Unlockable bird skins with unique particle trail effects',
+      'Real-time global leaderboard with Firebase',
+      'Google Sign-In and guest authentication',
+      'Achievement system with progression tracking',
+      'Offline-first architecture with automatic score syncing',
+      'Haptic feedback and vibration patterns',
+      'Accessibility: High contrast, reduced motion, color blind support',
+      'Adaptive quality management based on device performance',
+      'Local notifications for achievements and milestones',
+      'Cross-platform: Android, iOS, Web, Windows, macOS, Linux'
+    ],
+    playStoreUrl: '',  // Add when published
+    appStoreUrl: '',   // Add when published
+    githubUrl: '',     // Add if public
+    startDate: '2024-01',
+    endDate: '2025-11',
+    isFeatured: true,
+    category: 'Personal',
+    metrics: {
+      downloads: '10K+', rating: 4.5
+    }
   },
   {
-    id: 'healthmate',
-    title: 'HealthMate',
-    shortDescription:
-      'Health and fitness companion with workout tracking and meal planning.',
-    fullDescription:
-      'HealthMate helps users achieve their fitness goals with personalized workout plans, meal tracking, and progress analytics. Integrates with wearables for real-time health monitoring and provides AI-powered recommendations.',
-    heroImage: '/images/projects/healthmate-hero.png',
+    id: 'covid19-tracker-flutter',
+    title: 'COVID-19 Global Tracker',
+    shortDescription: 'Real-time COVID-19 statistics tracker with interactive world map and data visualization.',
+    fullDescription: 'A comprehensive Flutter application that provides real-time COVID-19 statistics from around the world. Features an interactive world map with heatmap visualization, country-wise detailed statistics, and beautiful data visualizations using pie charts and formatted metrics. The app supports dark/light themes, allows users to save favorite countries, and includes geolocation to show local statistics. Built with clean MVC architecture using GetX for state management.',
+    heroImage: '/images/projects/covid19-tracker-hero.png',
     screenshots: [
-      '/images/projects/healthmate-1.png',
-      '/images/projects/healthmate-2.png',
-      '/images/projects/healthmate-3.png',
+      '/images/projects/covid19-tracker-home-light.jpg',
+      '/images/projects/covid19-tracker-home-dark.jpg',
+      '/images/projects/covid19-tracker-map.jpg',
+      '/images/projects/covid19-tracker-map-filter.jpg',
+      '/images/projects/covid19-tracker-map-four.jpg',
+      '/images/projects/covid19-tracker-countries-light.jpg',
+      '/images/projects/covid19-tracker-countries-dark.jpg',
+      '/images/projects/covid19-tracker-country-detail-light.jpg',
+      '/images/projects/covid19-tracker-favorites.jpg'
     ],
-    techStack: ['Flutter', 'Dart', 'Firebase', 'GetX', 'Health Connect'],
+    techStack: [
+      'Flutter',
+      'Dart',
+      'GetX',
+      'Flutter Map',
+      'FL Chart',
+      'REST API',
+      'Geolocator',
+      'Cached Network Image',
+      'Shimmer'
+    ],
     features: [
-      'Personalized workout plans',
-      'Meal tracking with nutrition info',
-      'Wearable device integration',
-      'Progress analytics dashboard',
+      'Real-time global COVID-19 statistics',
+      'Interactive world map with heatmap overlay',
+      'Country-wise detailed statistics with risk levels',
+      'Beautiful pie charts and data visualizations',
+      'Dark/Light theme support',
+      'Favorites system for quick access',
+      'Search and filter countries',
+      'Geolocation-based local stats',
+      'Pull-to-refresh data updates',
+      'Marker clustering for better map performance',
+      'Animated UI transitions'
     ],
-    playStoreUrl: 'https://play.google.com/store/apps/details?id=com.healthmate',
-    appStoreUrl: 'https://apps.apple.com/app/healthmate/id987654321',
-    startDate: '2023-01',
-    endDate: '2023-08',
+    playStoreUrl: '', 
+    appStoreUrl: '',  
+    githubUrl: 'https://github.com/muneebexotic/modern-covid19-tracker-app',     
+    startDate: '2024-01',
+    endDate: '2024-06',
     isFeatured: true,
-    category: 'Client',
+    category: 'Personal',
     metrics: {
-      downloads: '100K+',
-      rating: 4.6,
-    },
+      // Add if available
+    }
   },
-  {
-    id: 'taskflow',
-    title: 'TaskFlow',
-    shortDescription:
-      'Collaborative task management app for teams with real-time sync.',
-    fullDescription:
-      'TaskFlow is a team productivity app featuring kanban boards, task assignments, deadline tracking, and real-time collaboration. Built with Flutter and Firebase for seamless cross-platform experience with offline support.',
-    heroImage: '/images/projects/taskflow-hero.png',
-    screenshots: [
-      '/images/projects/taskflow-1.png',
-      '/images/projects/taskflow-2.png',
-    ],
-    techStack: ['Flutter', 'Dart', 'Firebase', 'Bloc', 'Cloud Functions'],
-    features: [
-      'Kanban board interface',
-      'Real-time collaboration',
-      'Push notifications',
-      'Offline mode support',
-    ],
-    playStoreUrl: 'https://play.google.com/store/apps/details?id=com.taskflow',
-    githubUrl: 'https://github.com/username/taskflow',
-    startDate: '2022-09',
-    endDate: '2023-02',
-    isFeatured: true,
-    category: 'Open Source',
-    metrics: {
-      downloads: '25K+',
-      rating: 4.5,
-    },
-  },
+
   {
     id: 'shopease',
     title: 'ShopEase',
