@@ -63,6 +63,7 @@ export const metadata: Metadata = {
     description: `Portfolio of ${aboutData.name}, ${aboutData.title} specializing in cross-platform mobile applications.`,
     images: ["/og-image.jpg"],
     creator: "@alexchen_dev",
+
   },
   robots: {
     index: true,
