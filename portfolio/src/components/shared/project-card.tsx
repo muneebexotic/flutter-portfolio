@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { truncateText } from "@/lib/utils";
 import { cardHover, reducedMotionCardHover } from "@/lib/animations";
-import { usePrefersReducedMotion } from "@/hooks";
+import { usePrefersReducedMotion, useMediaQuery } from "@/hooks";
 import { Badge } from "@/components/ui/badge";
 import { trackProjectCardClick, trackExternalLinkClick } from "@/lib/analytics";
 import type { Project } from "@/types";
@@ -33,13 +33,15 @@ function ProjectCard({ project, onClick, className }: ProjectCardProps) {
   } = project;
 
   const prefersReducedMotion = usePrefersReducedMotion();
+  const isMobile = useMediaQuery("(max-width: 767px)");
 
   // Truncate title to 60 chars and description to 120 chars per requirements
   const truncatedTitle = truncateText(title, 60);
   const truncatedDescription = truncateText(shortDescription, 120);
 
   // Use reduced motion variants when user prefers reduced motion
-  const hoverVariants = prefersReducedMotion ? reducedMotionCardHover : cardHover;
+  // Disable hover scale animation on mobile to prevent tap-to-hover issues
+  const hoverVariants = prefersReducedMotion || isMobile ? reducedMotionCardHover : cardHover;
 
   return (
     <motion.article
@@ -50,7 +52,7 @@ function ProjectCard({ project, onClick, className }: ProjectCardProps) {
       )}
       variants={hoverVariants}
       initial="rest"
-      whileHover="hover"
+      whileHover={isMobile ? undefined : "hover"}
       onClick={() => {
         trackProjectCardClick(project.id, title);
         onClick?.();
