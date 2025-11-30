@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { truncateText } from "@/lib/utils";
 import { cardHover, reducedMotionCardHover } from "@/lib/animations";
 import { usePrefersReducedMotion, useMediaQuery } from "@/hooks";
+import { useThemeMode } from "@/hooks/useThemeMode";
 import { Badge } from "@/components/ui/badge";
 import { trackProjectCardClick, trackExternalLinkClick } from "@/lib/analytics";
 import type { Project } from "@/types";
@@ -34,6 +35,10 @@ function ProjectCard({ project, onClick, className }: ProjectCardProps) {
 
   const prefersReducedMotion = usePrefersReducedMotion();
   const isMobile = useMediaQuery("(max-width: 767px)");
+  const { mode } = useThemeMode();
+
+  const isDark = mode === "dark";
+  const isGlass = mode === "glassmorphism";
 
   // Truncate title to 60 chars and description to 120 chars per requirements
   const truncatedTitle = truncateText(title, 60);
@@ -46,8 +51,29 @@ function ProjectCard({ project, onClick, className }: ProjectCardProps) {
   return (
     <motion.article
       className={cn(
-        "group relative flex flex-col overflow-hidden rounded-lg border border-border bg-card",
-        "cursor-pointer transition-shadow",
+        "group relative flex flex-col overflow-hidden rounded-2xl border backdrop-blur-sm",
+        "cursor-pointer transition-all duration-300",
+        // Light mode
+        mode === "default" && [
+          "bg-white/90 border-gray-300",
+          "shadow-[0_4px_20px_rgba(0,0,0,0.08)]",
+          "hover:shadow-[0_12px_40px_rgba(0,0,0,0.15)]",
+          "hover:border-blue-400",
+        ],
+        // Dark mode
+        isDark && [
+          "bg-slate-900/70 border-slate-700/50",
+          "shadow-[0_4px_20px_rgba(0,0,0,0.3)]",
+          "hover:shadow-[0_0_50px_-12px_rgba(99,102,241,0.4)]",
+          "hover:border-blue-500/30",
+        ],
+        // Glass mode
+        isGlass && [
+          "bg-white/10 border-white/20",
+          "shadow-[0_4px_20px_rgba(0,0,0,0.2)]",
+          "hover:shadow-[0_0_50px_-12px_rgba(168,85,247,0.4)]",
+          "hover:border-purple-400/30",
+        ],
         className
       )}
       variants={hoverVariants}
@@ -68,14 +94,15 @@ function ProjectCard({ project, onClick, className }: ProjectCardProps) {
       }}
       aria-label={`View details for ${title}`}
     >
-      {/* Hero Image */}
-      <div className="relative aspect-video overflow-hidden">
+      {/* Hero Image - with theme-aware treatments (Requirements: 7.3) */}
+      <div className="image-container relative aspect-video overflow-hidden">
         <Image
           src={heroImage}
           alt={`${title} app screenshot`}
           fill
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          className="object-cover"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          style={{ backfaceVisibility: "hidden" }}
         />
       </div>
 

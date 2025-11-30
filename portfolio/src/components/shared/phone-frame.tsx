@@ -29,8 +29,8 @@ function PhoneFrame({ screenshot, alt, className, priority = false }: PhoneFrame
       )}
       style={{ aspectRatio: "9 / 19.5" }}
     >
-      {/* Screenshot Image - rendered first (behind frame) */}
-      <div className="absolute inset-0 overflow-hidden rounded-[28px] m-[4.4%]">
+      {/* Screenshot Image - rendered first (behind frame) with theme-aware treatments (Requirements: 7.3) */}
+      <div className="image-container absolute inset-0 overflow-hidden rounded-[28px] m-[4.4%]">
         <Image
           src={screenshot}
           alt={alt}

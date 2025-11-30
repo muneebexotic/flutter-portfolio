@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Header } from "@/components/layout/header";
+import { GlassmorphismBackground } from "@/components/ui/glassmorphism-background";
 import { HomePageJsonLd } from "@/components/seo/json-ld";
 import { aboutData } from "@/data/about";
 import "./globals.css";
@@ -104,6 +105,9 @@ export default function RootLayout({
           disableTransitionOnChange={false}
           storageKey="portfolio-theme"
         >
+          {/* Glassmorphism background - only renders when mode is active */}
+          {/* Requirements: 2.4 */}
+          <GlassmorphismBackground />
           {/* Skip to main content link for keyboard/screen reader users */}
           {/* Requirements: 11.1, 11.2 */}
           <a

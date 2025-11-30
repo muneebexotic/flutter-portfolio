@@ -3,14 +3,16 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
-  staggerContainer,
   staggerItem,
-  reducedMotionStaggerContainer,
   reducedMotionStaggerItem,
 } from "@/lib/animations";
 import { usePrefersReducedMotion } from "@/hooks";
+import { useThemeMode } from "@/hooks/useThemeMode";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { SkillBar } from "@/components/shared/skill-bar";
+import { SkillBadge } from "@/components/ui/skill-badge";
+import { StaggeredList } from "@/components/ui/staggered-list";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { skills } from "@/data/skills";
 import type { SkillCategory } from "@/types";
 
@@ -68,11 +70,12 @@ function getCategoryIcon(category: string): React.ReactNode {
 
 function Skills({ className }: SkillsProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
+  const { mode } = useThemeMode();
+
+  const isDark = mode === "dark";
+  const isGlass = mode === "glassmorphism";
 
   // Use reduced motion variants when user prefers reduced motion
-  const containerVariants = prefersReducedMotion
-    ? reducedMotionStaggerContainer
-    : staggerContainer;
   const itemVariants = prefersReducedMotion
     ? reducedMotionStaggerItem
     : staggerItem;
@@ -90,42 +93,80 @@ function Skills({ className }: SkillsProps) {
           id="skills-heading"
         />
 
-        <motion.div
+        {/* Apply staggered list animation to skill categories (Requirements: 5.4) */}
+        <StaggeredList
+          animation="fadeUp"
+          staggerDelay={150}
           className="grid gap-8 md:grid-cols-2"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
         >
           {skills.map((category, categoryIndex) => (
-            <motion.div
+            <ScrollReveal
               key={category.category}
-              className="rounded-lg border border-border bg-card p-6"
-              variants={itemVariants}
+              animation="scale"
+              delay={categoryIndex * 100}
             >
-              {/* Category Header */}
-              <div className="mb-6 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  {getCategoryIcon(category.category)}
+              <motion.div
+                className={cn(
+                  "rounded-2xl border p-6 backdrop-blur-sm transition-all duration-300",
+                  // Light mode
+                  mode === "default" && [
+                    "bg-white/80 border-gray-300",
+                    "shadow-[0_4px_20px_rgba(0,0,0,0.08)]",
+                    "hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)]",
+                    "hover:border-blue-300",
+                  ],
+                  // Dark mode
+                  isDark && [
+                    "bg-slate-900/60 border-slate-700/50",
+                    "shadow-[0_4px_20px_rgba(0,0,0,0.3)]",
+                    "hover:shadow-[0_0_40px_-10px_rgba(99,102,241,0.3)]",
+                  ],
+                  // Glass mode
+                  isGlass && [
+                    "bg-white/10 border-white/20",
+                    "shadow-[0_4px_20px_rgba(0,0,0,0.2)]",
+                    "hover:shadow-[0_0_40px_-10px_rgba(168,85,247,0.3)]",
+                  ]
+                )}
+                variants={itemVariants}
+              >
+                {/* Category Header */}
+                <div className="mb-6 flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    {getCategoryIcon(category.category)}
+                  </div>
+                  <h3 className="text-lg font-semibold text-card-foreground">
+                    {category.category}
+                  </h3>
                 </div>
-                <h3 className="text-lg font-semibold text-card-foreground">
-                  {category.category}
-                </h3>
-              </div>
 
-              {/* Skills List */}
-              <div className="space-y-4">
-                {category.skills.map((skill, skillIndex) => (
-                  <SkillBar
-                    key={skill.name}
-                    skill={skill}
-                    index={categoryIndex * 2 + skillIndex}
-                  />
-                ))}
-              </div>
-            </motion.div>
+                {/* Skills List with SkillBar */}
+                <div className="space-y-4">
+                  {category.skills.map((skill, skillIndex) => (
+                    <SkillBar
+                      key={skill.name}
+                      skill={skill}
+                      index={categoryIndex * 2 + skillIndex}
+                    />
+                  ))}
+                </div>
+
+                {/* Skill Badges with hover animations (Requirements: 5.5) */}
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {category.skills.map((skill) => (
+                    <SkillBadge
+                      key={skill.name}
+                      variant="secondary"
+                      size="sm"
+                    >
+                      {skill.name}
+                    </SkillBadge>
+                  ))}
+                </div>
+              </motion.div>
+            </ScrollReveal>
           ))}
-        </motion.div>
+        </StaggeredList>
       </div>
     </section>
   );

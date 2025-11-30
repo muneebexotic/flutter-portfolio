@@ -10,7 +10,10 @@ import {
   reducedMotionStaggerItem,
 } from "@/lib/animations";
 import { usePrefersReducedMotion } from "@/hooks";
-import { Button } from "@/components/ui/button";
+import { useThemeMode } from "@/hooks/useThemeMode";
+import { AnimatedButton } from "@/components/ui/animated-button";
+import { GlassCard } from "@/components/ui/glass-card";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { SectionHeading } from "@/components/shared/section-heading";
@@ -38,6 +41,7 @@ function Contact({ className }: ContactProps) {
   const { socialLinks, resumeUrl } = aboutData;
   const [isPending, startTransition] = useTransition();
   const prefersReducedMotion = usePrefersReducedMotion();
+  const { isGlassmorphism } = useThemeMode();
   
   // Use reduced motion variants when user prefers reduced motion
   const containerVariants = prefersReducedMotion
@@ -128,112 +132,170 @@ function Contact({ className }: ContactProps) {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          {/* Contact Form */}
-          <motion.div variants={itemVariants}>
-            <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-              {/* Honeypot field - hidden from users, catches bots */}
-              <div className="absolute -left-[9999px] opacity-0" aria-hidden="true">
-                <input
-                  type="text"
-                  name="honeypot"
-                  value={formData.honeypot}
-                  onChange={handleInputChange}
-                  tabIndex={-1}
-                  autoComplete="off"
+          {/* Contact Form with glassmorphism styling when active (Requirements: 2.1, 5.1) */}
+          <ScrollReveal animation="slideLeft" delay={100}>
+            <motion.div variants={itemVariants}>
+              {/* Apply GlassCard wrapper when glassmorphism mode is active */}
+              {isGlassmorphism ? (
+                <GlassCard blur="md" opacity={0.2} className="p-6">
+                  <ContactForm
+                    formData={formData}
+                    formState={formState}
+                    isPending={isPending}
+                    handleInputChange={handleInputChange}
+                    handleSubmit={handleSubmit}
+                  />
+                </GlassCard>
+              ) : (
+                <div className={cn(
+                  "rounded-2xl border p-6 backdrop-blur-sm transition-all duration-300",
+                  "bg-white/80 border-gray-300 shadow-[0_4px_20px_rgba(0,0,0,0.08)]",
+                  "dark:bg-slate-900/60 dark:border-slate-700/50 dark:shadow-[0_4px_20px_rgba(0,0,0,0.3)]"
+                )}>
+                  <ContactForm
+                    formData={formData}
+                    formState={formState}
+                    isPending={isPending}
+                    handleInputChange={handleInputChange}
+                    handleSubmit={handleSubmit}
+                  />
+                </div>
+              )}
+            </motion.div>
+          </ScrollReveal>
+
+          {/* Social Links and Info */}
+          <ScrollReveal animation="slideRight" delay={200}>
+            <motion.div variants={itemVariants} className="space-y-8">
+              <div>
+                <h3 className="mb-4 text-lg font-semibold text-foreground">
+                  Connect with me
+                </h3>
+                <p className="mb-6 text-muted-foreground">
+                  Feel free to reach out through any of these platforms. I'm always
+                  open to discussing new projects, creative ideas, or opportunities.
+                </p>
+                <SocialLinks
+                  links={socialLinks}
+                  resumeUrl={resumeUrl}
+                  iconSize="lg"
                 />
               </div>
 
-              <Input
-                label="Name"
-                name="name"
-                type="text"
-                placeholder="Your name"
-                value={formData.name}
-                onChange={handleInputChange}
-                error={formState.errors.name}
-                required
-                disabled={isPending}
-              />
-
-              <Input
-                label="Email"
-                name="email"
-                type="email"
-                placeholder="your@email.com"
-                value={formData.email}
-                onChange={handleInputChange}
-                error={formState.errors.email}
-                required
-                disabled={isPending}
-              />
-
-              <Textarea
-                label="Message"
-                name="message"
-                placeholder="Tell me about your project..."
-                value={formData.message}
-                onChange={handleInputChange}
-                error={formState.errors.message}
-                required
-                disabled={isPending}
-              />
-
-              {/* General error message */}
-              {formState.errors.general && (
-                <p className="text-sm text-destructive" role="alert">
-                  {formState.errors.general}
+              <div>
+                <h3 className="mb-4 text-lg font-semibold text-foreground">
+                  Response Time
+                </h3>
+                <p className="text-muted-foreground">
+                  I typically respond within 24-48 hours. For urgent inquiries,
+                  please reach out via email directly.
                 </p>
-              )}
-
-              {/* Success message */}
-              {formState.status === "success" && (
-                <p className="text-sm text-green-600 dark:text-green-400" role="status">
-                  Thank you for your message! I'll get back to you soon.
-                </p>
-              )}
-
-              <Button
-                type="submit"
-                variant="primary"
-                size="lg"
-                isLoading={isPending}
-                className="w-full"
-              >
-                {isPending ? "Sending..." : "Send Message"}
-              </Button>
-            </form>
-          </motion.div>
-
-          {/* Social Links and Info */}
-          <motion.div variants={itemVariants} className="space-y-8">
-            <div>
-              <h3 className="mb-4 text-lg font-semibold text-foreground">
-                Connect with me
-              </h3>
-              <p className="mb-6 text-muted-foreground">
-                Feel free to reach out through any of these platforms. I'm always
-                open to discussing new projects, creative ideas, or opportunities.
-              </p>
-              <SocialLinks
-                links={socialLinks}
-                resumeUrl={resumeUrl}
-                iconSize="lg"
-              />
-            </div>
-
-            <div>
-              <h3 className="mb-4 text-lg font-semibold text-foreground">
-                Response Time
-              </h3>
-              <p className="text-muted-foreground">
-                I typically respond within 24-48 hours. For urgent inquiries,
-                please reach out via email directly.
-              </p>
-            </div>
-          </motion.div>
+              </div>
+            </motion.div>
+          </ScrollReveal>
         </motion.div>
       </div>
     </section>
+  );
+}
+
+/**
+ * ContactForm component - extracted for reuse with different wrappers
+ */
+interface ContactFormProps {
+  formData: {
+    name: string;
+    email: string;
+    message: string;
+    honeypot: string;
+  };
+  formState: ContactFormState;
+  isPending: boolean;
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+}
+
+function ContactForm({
+  formData,
+  formState,
+  isPending,
+  handleInputChange,
+  handleSubmit,
+}: ContactFormProps) {
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+      {/* Honeypot field - hidden from users, catches bots */}
+      <div className="absolute -left-[9999px] opacity-0" aria-hidden="true">
+        <input
+          type="text"
+          name="honeypot"
+          value={formData.honeypot}
+          onChange={handleInputChange}
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
+
+      <Input
+        label="Name"
+        name="name"
+        type="text"
+        placeholder="Your name"
+        value={formData.name}
+        onChange={handleInputChange}
+        error={formState.errors.name}
+        required
+        disabled={isPending}
+      />
+
+      <Input
+        label="Email"
+        name="email"
+        type="email"
+        placeholder="your@email.com"
+        value={formData.email}
+        onChange={handleInputChange}
+        error={formState.errors.email}
+        required
+        disabled={isPending}
+      />
+
+      <Textarea
+        label="Message"
+        name="message"
+        placeholder="Tell me about your project..."
+        value={formData.message}
+        onChange={handleInputChange}
+        error={formState.errors.message}
+        required
+        disabled={isPending}
+      />
+
+      {/* General error message */}
+      {formState.errors.general && (
+        <p className="text-sm text-destructive" role="alert">
+          {formState.errors.general}
+        </p>
+      )}
+
+      {/* Success message */}
+      {formState.status === "success" && (
+        <p className="text-sm text-green-600 dark:text-green-400" role="status">
+          Thank you for your message! I'll get back to you soon.
+        </p>
+      )}
+
+      {/* AnimatedButton for submit with micro-animations (Requirements: 5.1) */}
+      <AnimatedButton
+        type="submit"
+        variant="primary"
+        size="lg"
+        isLoading={isPending}
+        className="w-full"
+      >
+        {isPending ? "Sending..." : "Send Message"}
+      </AnimatedButton>
+    </form>
   );
 }
 

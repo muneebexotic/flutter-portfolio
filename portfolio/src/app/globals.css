@@ -55,6 +55,469 @@
   --ring: 217.2 91.2% 59.8%;
 }
 
+/* ============================================
+   Theme Mode System - Requirements: 1.2, 7.1, 7.4
+   ============================================ */
+
+/* Theme Mode: Default (Light) */
+/* Applied via .theme-default class on document root */
+.theme-default {
+  /* Glass effect variables (minimal for default mode) */
+  --glass-blur: 0px;
+  --glass-opacity: 1;
+  --glass-border-opacity: 0.1;
+  --glass-background: hsl(var(--card));
+  
+  /* Glow effect variables (disabled for default) */
+  --glow-color: transparent;
+  --glow-intensity: 0;
+  
+  /* Theme transition - Requirements: 7.4 */
+  --theme-transition-duration: 300ms;
+}
+
+/* Theme Mode: Glassmorphism */
+/* Requirements: 2.1, 2.2, 2.3, 2.4 */
+.theme-glassmorphism {
+  /* Glass effect variables */
+  --glass-blur: 15px;
+  --glass-opacity: 0.2;
+  --glass-border-opacity: 0.2;
+  --glass-background: hsla(var(--card), var(--glass-opacity));
+  
+  /* Glow effect variables */
+  --glow-color: hsl(var(--primary) / 0.3);
+  --glow-intensity: 0.5;
+  
+  /* Theme transition - Requirements: 7.4 */
+  --theme-transition-duration: 400ms;
+  
+  /* Gradient background for glassmorphism - Requirements: 2.4 */
+  --gradient-start: hsl(240 60% 60%);
+  --gradient-mid: hsl(280 60% 50%);
+  --gradient-end: hsl(320 60% 55%);
+}
+
+/* Theme Mode: Dark */
+/* Requirements: 3.1, 3.2, 3.3, 3.5 */
+.theme-dark {
+  /* Override base colors for dark mode - Requirements: 3.1, 3.2 */
+  /* Background colors: lightness < 15% for dark backgrounds */
+  --background: 222 47% 6%;           /* ~6% lightness - deep dark blue */
+  --foreground: 210 40% 98%;          /* ~98% lightness - near white */
+  --card: 222 47% 8%;                 /* ~8% lightness - slightly lighter card */
+  --card-foreground: 210 40% 98%;     /* ~98% lightness */
+  
+  /* Primary colors - vibrant blue for visual hierarchy */
+  --primary: 217 91% 60%;             /* Bright blue accent */
+  --primary-foreground: 222 47% 11%;  /* Dark text on primary */
+  
+  /* Secondary colors - muted dark tones */
+  --secondary: 217 33% 12%;           /* ~12% lightness */
+  --secondary-foreground: 210 40% 92%; /* ~92% lightness */
+  
+  /* Muted colors for subtle elements */
+  --muted: 217 33% 10%;               /* ~10% lightness */
+  --muted-foreground: 215 20% 70%;    /* ~70% lightness for muted text */
+  
+  /* Accent colors - Requirements: 3.3 - visual hierarchy without eye strain */
+  --accent: 260 60% 55%;              /* Purple accent for variety */
+  --accent-foreground: 210 40% 98%;   /* ~98% lightness */
+  
+  /* Destructive colors */
+  --destructive: 0 63% 45%;           /* Muted red for dark mode */
+  --destructive-foreground: 210 40% 98%;
+  
+  /* Border and ring colors */
+  --border: 217 33% 18%;              /* Subtle border */
+  --ring: 217 91% 60%;                /* Matches primary */
+  
+  /* Glass effect variables */
+  --glass-blur: 10px;
+  --glass-opacity: 0.15;
+  --glass-border-opacity: 0.15;
+  --glass-background: hsla(var(--card), var(--glass-opacity));
+  
+  /* Glow effect variables - Requirements: 3.5 */
+  --glow-color: hsl(217 91% 60% / 0.4);
+  --glow-color-primary: hsl(217 91% 60% / 0.5);
+  --glow-color-accent: hsl(260 60% 55% / 0.4);
+  --glow-intensity: 0.8;
+  --glow-spread: 20px;
+  --glow-blur: 25px;
+  
+  /* Theme transition - Requirements: 7.4 */
+  --theme-transition-duration: 400ms;
+}
+
+/* Theme transition styles - Requirements: 7.2, 7.4 */
+/* Smooth transitions when switching between theme modes (300-500ms) */
+.theme-default,
+.theme-glassmorphism,
+.theme-dark {
+  transition-property: background-color, color, border-color, box-shadow, fill, stroke;
+  transition-duration: var(--theme-transition-duration, 300ms);
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Theme transitioning state - Requirements: 7.2 */
+/* Applied during theme transitions to prevent layout shifts */
+.theme-transitioning {
+  /* Prevent layout shifts during transitions */
+  overflow-anchor: none;
+}
+
+.theme-transitioning *,
+.theme-transitioning *::before,
+.theme-transitioning *::after {
+  /* Ensure all elements transition smoothly */
+  transition-property: background-color, color, border-color, box-shadow, fill, stroke, opacity;
+  transition-duration: var(--theme-transition-duration, 400ms);
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Prevent layout-affecting properties from transitioning */
+.theme-transitioning * {
+  /* These properties should NOT transition to prevent layout shifts */
+  transition-property: background-color, color, border-color, box-shadow, fill, stroke, opacity, filter;
+}
+
+/* Ensure images and media don't cause layout shifts during transitions */
+.theme-transitioning img,
+.theme-transitioning video,
+.theme-transitioning picture,
+.theme-transitioning svg {
+  /* Only transition visual properties, not dimensions */
+  transition-property: filter, opacity;
+  transition-duration: var(--theme-transition-duration, 400ms);
+}
+
+/* ============================================
+   Image Treatments Per Theme Mode
+   Requirements: 7.3 - consistent visual treatment for images
+   ============================================ */
+
+/* Default theme - clean, natural image appearance */
+.theme-default img,
+.theme-default video,
+.theme-default picture img {
+  filter: none;
+  transition: filter var(--theme-transition-duration, 300ms) ease-out;
+}
+
+/* Glassmorphism theme - subtle brightness and saturation boost */
+.theme-glassmorphism img,
+.theme-glassmorphism video,
+.theme-glassmorphism picture img {
+  filter: brightness(1.02) saturate(1.1) contrast(0.98);
+  transition: filter var(--theme-transition-duration, 400ms) ease-out;
+}
+
+/* Glassmorphism hover effect for images */
+.theme-glassmorphism img:hover,
+.theme-glassmorphism picture img:hover {
+  filter: brightness(1.05) saturate(1.15) contrast(0.98);
+}
+
+/* Dark theme - subtle adjustments for dark backgrounds */
+.theme-dark img,
+.theme-dark video,
+.theme-dark picture img {
+  filter: brightness(0.92) contrast(1.05) saturate(0.95);
+  transition: filter var(--theme-transition-duration, 400ms) ease-out;
+}
+
+/* Dark theme hover effect - subtle glow appearance */
+.theme-dark img:hover,
+.theme-dark picture img:hover {
+  filter: brightness(1) contrast(1.08) saturate(1);
+}
+
+/* Image overlay for glassmorphism mode - adds frosted glass effect */
+.theme-glassmorphism .image-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0) 50%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  pointer-events: none;
+  opacity: 0.5;
+  transition: opacity var(--theme-transition-duration, 400ms) ease-out;
+}
+
+/* Image overlay for dark mode - adds subtle dark vignette */
+.theme-dark .image-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(0, 0, 0, 0.15) 100%
+  );
+  pointer-events: none;
+  opacity: 0.6;
+  transition: opacity var(--theme-transition-duration, 400ms) ease-out;
+}
+
+/* Respect reduced motion preference for image transitions */
+@media (prefers-reduced-motion: reduce) {
+  .theme-default img,
+  .theme-glassmorphism img,
+  .theme-dark img,
+  .theme-default video,
+  .theme-glassmorphism video,
+  .theme-dark video {
+    transition: none;
+  }
+}
+
+/* ============================================
+   Dark Mode Glow Effects
+   Requirements: 3.5 - subtle glow effects on interactive elements
+   Works with .dark (next-themes) and .theme-glass (unified theme)
+   ============================================ */
+
+/* Glow effect for buttons in dark mode */
+.dark button:not(:disabled):hover,
+.dark [role="button"]:not(:disabled):hover,
+.dark .btn:hover,
+.theme-glass button:not(:disabled):hover,
+.theme-glass [role="button"]:not(:disabled):hover,
+.theme-glass .btn:hover {
+  box-shadow: 
+    0 0 25px hsl(217 91% 60% / 0.4),
+    0 0 12px hsl(217 91% 60% / 0.5);
+  transition: box-shadow 200ms ease-out;
+}
+
+/* Glow effect for links in dark mode */
+.dark a:not(.no-glow):hover,
+.theme-glass a:not(.no-glow):hover {
+  text-shadow: 0 0 10px hsl(217 91% 60% / 0.4);
+  transition: text-shadow 200ms ease-out;
+}
+
+/* Glow effect for cards in dark mode */
+.dark .card:hover,
+.dark .glass-card:hover,
+.dark [data-card]:hover,
+.theme-glass .card:hover,
+.theme-glass .glass-card:hover,
+.theme-glass [data-card]:hover {
+  box-shadow: 
+    0 0 20px hsl(217 91% 60% / 0.4),
+    0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: box-shadow 200ms ease-out;
+}
+
+/* Glow effect for primary interactive elements */
+.dark .glow-primary:hover,
+.theme-glass .glow-primary:hover {
+  box-shadow: 
+    0 0 25px hsl(217 91% 60% / 0.5),
+    0 0 37px hsl(217 91% 60% / 0.3);
+}
+
+/* Glow effect for accent interactive elements */
+.dark .glow-accent:hover,
+.theme-glass .glow-accent:hover {
+  box-shadow: 
+    0 0 25px hsl(260 60% 55% / 0.4),
+    0 0 37px hsl(260 60% 55% / 0.3);
+}
+
+/* Focus glow for accessibility in dark mode */
+.dark :focus-visible,
+.theme-glass :focus-visible {
+  box-shadow: 
+    0 0 0 2px hsl(var(--background)),
+    0 0 0 4px hsl(var(--ring)),
+    0 0 15px hsl(217 91% 60% / 0.4);
+}
+
+/* Respect reduced motion preference for glow transitions */
+@media (prefers-reduced-motion: reduce) {
+  .dark button:hover,
+  .dark [role="button"]:hover,
+  .dark a:hover,
+  .dark .card:hover,
+  .dark .glass-card:hover,
+  .theme-glass button:hover,
+  .theme-glass [role="button"]:hover,
+  .theme-glass a:hover,
+  .theme-glass .card:hover,
+  .theme-glass .glass-card:hover {
+    transition: none;
+  }
+}
+
+/* ============================================
+   GlassCard Component Styles
+   Requirements: 2.1, 2.2, 2.3, 8.4
+   ============================================ */
+
+/* Glass card base styles */
+.glass-card {
+  /* Subtle border with reduced opacity - Requirements: 2.3 */
+  border: 1px solid hsl(var(--border) / var(--glass-border-opacity, 0.2));
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+}
+
+/* Fallback for browsers without backdrop-filter support - Requirements: 8.4 */
+@supports not (backdrop-filter: blur(10px)) {
+  .glass-card {
+    /* Solid semi-transparent background as fallback */
+    background-color: hsl(var(--card) / 0.85) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+/* ============================================
+   Unified Theme: Glass Mode
+   Applied via .theme-glass class (dark-based with glassmorphism effects)
+   ============================================ */
+
+.theme-glass {
+  /* Inherit dark mode colors */
+  --background: 222 47% 6%;
+  --foreground: 210 40% 98%;
+  --card: 222 47% 8%;
+  --card-foreground: 210 40% 98%;
+  --primary: 217 91% 60%;
+  --primary-foreground: 222 47% 11%;
+  --secondary: 217 33% 12%;
+  --secondary-foreground: 210 40% 92%;
+  --muted: 217 33% 10%;
+  --muted-foreground: 215 20% 70%;
+  --accent: 260 60% 55%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 63% 45%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217 33% 18%;
+  --ring: 217 91% 60%;
+  
+  /* Glass effect variables */
+  --glass-blur: 15px;
+  --glass-opacity: 0.2;
+  --glass-border-opacity: 0.2;
+  --glass-background: hsla(var(--card), var(--glass-opacity));
+  
+  /* Glow effect variables */
+  --glow-color: hsl(var(--primary) / 0.3);
+  --glow-intensity: 0.5;
+  
+  /* Gradient background */
+  --gradient-start: hsl(240 60% 60%);
+  --gradient-mid: hsl(280 60% 50%);
+  --gradient-end: hsl(320 60% 55%);
+}
+
+/* Glass mode gradient background */
+.theme-glass body {
+  background: linear-gradient(
+    135deg,
+    hsl(240 40% 12%) 0%,
+    hsl(280 40% 10%) 50%,
+    hsl(320 40% 12%) 100%
+  );
+  background-attachment: fixed;
+}
+
+/* Glass mode glow effects */
+.theme-glass button:not(:disabled):hover,
+.theme-glass [role="button"]:not(:disabled):hover {
+  box-shadow: 
+    0 0 25px hsl(217 91% 60% / 0.4),
+    0 0 12px hsl(217 91% 60% / 0.5);
+}
+
+.theme-glass .card:hover,
+.theme-glass .glass-card:hover {
+  box-shadow: 
+    0 0 20px hsl(217 91% 60% / 0.4),
+    0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================
+   Glassmorphism Background Styles
+   Requirements: 2.4 - gradient background for glassmorphism mode
+   ============================================ */
+
+.glassmorphism-background {
+  background: linear-gradient(
+    135deg,
+    var(--gradient-start, hsl(240 60% 60%)) 0%,
+    var(--gradient-mid, hsl(280 60% 50%)) 50%,
+    var(--gradient-end, hsl(320 60% 55%)) 100%
+  );
+}
+
+/* Animated gradient orbs for depth and visual interest */
+.glass-gradient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.6;
+  animation: float-orb 20s ease-in-out infinite;
+}
+
+.glass-gradient-orb-1 {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, hsl(260 70% 60% / 0.8) 0%, transparent 70%);
+  top: -200px;
+  left: -100px;
+  animation-delay: 0s;
+}
+
+.glass-gradient-orb-2 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, hsl(320 70% 55% / 0.7) 0%, transparent 70%);
+  top: 40%;
+  right: -150px;
+  animation-delay: -7s;
+  animation-duration: 25s;
+}
+
+.glass-gradient-orb-3 {
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, hsl(200 70% 50% / 0.6) 0%, transparent 70%);
+  bottom: -100px;
+  left: 30%;
+  animation-delay: -14s;
+  animation-duration: 22s;
+}
+
+@keyframes float-orb {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(30px, -40px) scale(1.05);
+  }
+  50% {
+    transform: translate(-20px, 20px) scale(0.95);
+  }
+  75% {
+    transform: translate(40px, 30px) scale(1.02);
+  }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .glass-gradient-orb {
+    animation: none;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;

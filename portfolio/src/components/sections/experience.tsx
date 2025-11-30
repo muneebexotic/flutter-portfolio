@@ -7,6 +7,7 @@ import { staggerContainer, reducedMotionStaggerContainer } from "@/lib/animation
 import { usePrefersReducedMotion } from "@/hooks";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { TimelineItem } from "@/components/shared/timeline-item";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { experiences } from "@/data/experience";
 import type { Experience as ExperienceType } from "@/types";
 
@@ -64,18 +65,25 @@ function Experience({ className }: ExperienceProps) {
         />
 
         <motion.div
-          className="relative"
+          className="relative space-y-6"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
         >
+          {/* Wrap timeline items in ScrollReveal for entrance animations (Requirements: 5.2) */}
           {sortedExperiences.map((experience, index) => (
-            <TimelineItem
+            <ScrollReveal
               key={experience.id}
-              experience={experience}
-              index={index}
-            />
+              animation={index % 2 === 0 ? "slideLeft" : "slideRight"}
+              delay={index * 100}
+              threshold={0.2}
+            >
+              <TimelineItem
+                experience={experience}
+                index={index}
+              />
+            </ScrollReveal>
           ))}
         </motion.div>
       </div>

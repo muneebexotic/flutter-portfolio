@@ -33,14 +33,15 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      "inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 rounded-md";
+      "inline-flex items-center justify-center font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 rounded-md";
 
+    // Variants with glow effect support for dark mode (Requirements: 3.5)
     const variants = {
-      primary: "bg-primary text-primary-foreground hover:bg-primary/90",
+      primary: "bg-primary text-primary-foreground hover:bg-primary/90 glow-primary",
       secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
       outline:
         "border border-border bg-transparent hover:bg-accent hover:text-accent-foreground",
-      ghost: "hover:bg-accent hover:text-accent-foreground",
+      ghost: "hover:bg-accent hover:text-accent-foreground glow-accent",
     };
 
     const sizes = {

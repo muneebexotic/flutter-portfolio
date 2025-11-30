@@ -58,9 +58,9 @@ function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
       title={title}
       className="max-w-2xl"
     >
-      {/* Screenshot Carousel */}
+      {/* Screenshot Carousel - with theme-aware treatments (Requirements: 7.3) */}
       <div className="relative mb-6 overflow-hidden rounded-lg bg-muted">
-        <div className="relative aspect-[9/16] max-h-[400px] w-full">
+        <div className="image-container relative aspect-[9/16] max-h-[400px] w-full">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentImageIndex}

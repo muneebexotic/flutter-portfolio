@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { fadeInUp } from "@/lib/animations";
+import { useThemeMode } from "@/hooks/useThemeMode";
 import { Badge } from "@/components/ui/badge";
 import type { Experience } from "@/types";
 
@@ -38,6 +39,10 @@ export function formatDuration(startDate: string, endDate?: string): string {
 
 function TimelineItem({ experience, index = 0, className }: TimelineItemProps) {
   const { company, role, startDate, endDate, location, achievements, technologies } = experience;
+  const { mode } = useThemeMode();
+  
+  const isDark = mode === "dark";
+  const isGlass = mode === "glassmorphism";
   
   const duration = formatDuration(startDate, endDate);
   const staggerDelay = index * 0.15;
@@ -51,14 +56,45 @@ function TimelineItem({ experience, index = 0, className }: TimelineItemProps) {
       viewport={{ once: true, margin: "-50px" }}
       transition={{ delay: staggerDelay }}
     >
-      {/* Timeline line */}
-      <div className="absolute left-[11px] top-2 h-full w-0.5 bg-border last:hidden" />
+      {/* Timeline line with gradient */}
+      <div className={cn(
+        "absolute left-[11px] top-2 h-full w-0.5 last:hidden",
+        isDark && "bg-gradient-to-b from-blue-500/50 to-purple-500/30",
+        isGlass && "bg-gradient-to-b from-purple-400/50 to-pink-400/30",
+        mode === "default" && "bg-gradient-to-b from-blue-400/50 to-indigo-400/30"
+      )} />
       
-      {/* Timeline dot */}
-      <div className="absolute left-0 top-2 h-6 w-6 rounded-full border-2 border-primary bg-background" />
+      {/* Timeline dot with glow */}
+      <div className={cn(
+        "absolute left-0 top-2 h-6 w-6 rounded-full border-2 bg-background transition-shadow duration-300",
+        isDark && "border-blue-500 shadow-[0_0_12px_rgba(99,102,241,0.5)]",
+        isGlass && "border-purple-400 shadow-[0_0_12px_rgba(168,85,247,0.5)]",
+        mode === "default" && "border-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.3)]"
+      )} />
 
       {/* Content */}
-      <div className="rounded-lg border border-border bg-card p-4 shadow-sm">
+      <div className={cn(
+        "rounded-2xl border p-5 backdrop-blur-sm transition-all duration-300",
+        // Light mode
+        mode === "default" && [
+          "bg-white/80 border-gray-300",
+          "shadow-[0_4px_20px_rgba(0,0,0,0.08)]",
+          "hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)]",
+          "hover:border-blue-300",
+        ],
+        // Dark mode
+        isDark && [
+          "bg-slate-900/60 border-slate-700/50",
+          "shadow-[0_4px_20px_rgba(0,0,0,0.3)]",
+          "hover:shadow-[0_0_40px_-10px_rgba(99,102,241,0.3)]",
+        ],
+        // Glass mode
+        isGlass && [
+          "bg-white/10 border-white/20",
+          "shadow-[0_4px_20px_rgba(0,0,0,0.2)]",
+          "hover:shadow-[0_0_40px_-10px_rgba(168,85,247,0.3)]",
+        ]
+      )}>
         {/* Header */}
         <div className="mb-2">
           <h3 className="text-lg font-semibold text-card-foreground">{role}</h3>

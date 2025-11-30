@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { fadeInUp } from "@/lib/animations";
+import { useThemeMode } from "@/hooks/useThemeMode";
 
 /**
  * SectionHeading component - Consistent heading style with optional subtitle
@@ -18,6 +19,10 @@ export interface SectionHeadingProps {
 }
 
 function SectionHeading({ title, subtitle, className, id }: SectionHeadingProps) {
+  const { mode } = useThemeMode();
+  const isDark = mode === "dark";
+  const isGlass = mode === "glassmorphism";
+
   return (
     <motion.div
       className={cn("mb-12 text-center", className)}
@@ -28,7 +33,13 @@ function SectionHeading({ title, subtitle, className, id }: SectionHeadingProps)
     >
       <h2
         id={id}
-        className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl"
+        className={cn(
+          "text-3xl font-bold tracking-tight sm:text-4xl",
+          "bg-clip-text text-transparent",
+          isDark && "bg-gradient-to-r from-white via-blue-100 to-purple-200",
+          isGlass && "bg-gradient-to-r from-white via-purple-200 to-pink-200",
+          mode === "default" && "bg-gradient-to-r from-gray-900 via-blue-800 to-indigo-900"
+        )}
       >
         {title}
       </h2>

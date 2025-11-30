@@ -4,17 +4,17 @@ import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
-  staggerContainer,
   staggerItem,
   fadeInUp,
-  reducedMotionStaggerContainer,
   reducedMotionStaggerItem,
   reducedMotionFadeIn,
 } from "@/lib/animations";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { ProjectCard } from "@/components/shared/project-card";
 import { ProjectModal } from "@/components/shared/project-modal";
-import { Button } from "@/components/ui/button";
+import { AnimatedButton } from "@/components/ui/animated-button";
+import { TiltCard } from "@/components/ui/tilt-card";
+import { StaggeredList } from "@/components/ui/staggered-list";
 import { useMediaQuery, usePrefersReducedMotion } from "@/hooks";
 import { projects } from "@/data/projects";
 import type { Project } from "@/types";
@@ -55,9 +55,6 @@ function Projects({ className }: ProjectsProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
 
   // Use reduced motion variants when user prefers reduced motion
-  const containerVariants = prefersReducedMotion
-    ? reducedMotionStaggerContainer
-    : staggerContainer;
   const itemVariants = prefersReducedMotion
     ? reducedMotionStaggerItem
     : staggerItem;
@@ -102,12 +99,11 @@ function Projects({ className }: ProjectsProps) {
           id="projects-heading"
         />
 
-        <motion.div
+        {/* Staggered entrance animations for project cards (Requirements: 5.4) */}
+        <StaggeredList
+          animation="fadeUp"
+          staggerDelay={100}
           className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
         >
           <AnimatePresence mode="popLayout">
             {visibleProjects.map((project) => (
@@ -121,11 +117,20 @@ function Projects({ className }: ProjectsProps) {
                 transition={{ duration: prefersReducedMotion ? 0 : 0.3 }}
                 className={isMobile ? "" : "h-full"}
               >
-                <ProjectCard
-                  project={project}
-                  onClick={() => handleProjectClick(project)}
+                {/* Apply TiltCard to project cards (Requirements: 4.1) */}
+                <TiltCard
+                  maxTilt={12}
+                  scale={1.02}
+                  perspective={1000}
                   className={isMobile ? "" : "h-full"}
-                />
+                  enabled={!isMobile}
+                >
+                  <ProjectCard
+                    project={project}
+                    onClick={() => handleProjectClick(project)}
+                    className={isMobile ? "" : "h-full"}
+                  />
+                </TiltCard>
                 
                 {/* Mobile Accordion Content */}
                 {isMobile && (
@@ -138,9 +143,9 @@ function Projects({ className }: ProjectsProps) {
               </motion.div>
             ))}
           </AnimatePresence>
-        </motion.div>
+        </StaggeredList>
 
-        {/* Load More Button */}
+        {/* Load More Button with AnimatedButton */}
         {hasMoreProjects && !showAll && (
           <motion.div
             className="mt-10 text-center"
@@ -149,13 +154,14 @@ function Projects({ className }: ProjectsProps) {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            <Button
-              variant="outline"
+            <AnimatedButton
+              variant="secondary"
               size="lg"
               onClick={() => setShowAll(true)}
+              className="border border-border"
             >
               Load More Projects
-            </Button>
+            </AnimatedButton>
           </motion.div>
         )}
       </div>

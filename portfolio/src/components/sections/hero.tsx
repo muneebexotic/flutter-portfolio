@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
@@ -9,8 +10,15 @@ import {
   reducedMotionStaggerItem,
 } from "@/lib/animations";
 import { usePrefersReducedMotion } from "@/hooks";
-import { Button } from "@/components/ui/button";
+import { AnimatedButton } from "@/components/ui/animated-button";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { aboutData } from "@/data/about";
+
+// Lazy-load FloatingBackground for below-fold optimization (Requirements: 8.2)
+const FloatingBackground = dynamic(
+  () => import("@/components/ui/floating-background").then((mod) => ({ default: mod.FloatingBackground })),
+  { ssr: false }
+);
 
 /**
  * Hero section component
@@ -59,64 +67,75 @@ function Hero({ className }: HeroProps) {
       )}
       aria-label="Hero section"
     >
-      <motion.div
-        className="mx-auto max-w-4xl text-center"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        {/* Name - displayed prominently within 100ms of content paint */}
-        <motion.h1
-          className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl"
-          variants={itemVariants}
-        >
-          {name}
-        </motion.h1>
-
-        {/* Title - "Flutter Developer" */}
-        <motion.p
-          className="mt-4 text-xl font-medium text-primary sm:text-2xl md:text-3xl"
-          variants={itemVariants}
-        >
-          {title}
-        </motion.p>
-
-        {/* Tagline */}
-        <motion.p
-          className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl"
-          variants={itemVariants}
-        >
-          {tagline}
-        </motion.p>
-
-        {/* CTA Buttons */}
+      <ScrollReveal animation="fadeUp" duration={500} className="w-full">
         <motion.div
-          className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
-          variants={itemVariants}
+          className="mx-auto max-w-4xl text-center"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
         >
-          <Button
-            variant="primary"
-            size="lg"
-            onClick={() => scrollToSection("projects")}
-            rightIcon={<ArrowRightIcon className="h-4 w-4" />}
+          {/* Name - displayed prominently within 100ms of content paint */}
+          <motion.h1
+            className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl"
+            variants={itemVariants}
           >
-            View Projects
-          </Button>
-          <Button
-            variant="outline"
-            size="lg"
-            onClick={() => scrollToSection("contact")}
-          >
-            Get in Touch
-          </Button>
-        </motion.div>
-      </motion.div>
+            {name}
+          </motion.h1>
 
-      {/* Decorative gradient background */}
+          {/* Title - "Flutter Developer" */}
+          <motion.p
+            className="mt-4 text-xl font-medium text-primary sm:text-2xl md:text-3xl"
+            variants={itemVariants}
+          >
+            {title}
+          </motion.p>
+
+          {/* Tagline */}
+          <motion.p
+            className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl"
+            variants={itemVariants}
+          >
+            {tagline}
+          </motion.p>
+
+          {/* CTA Buttons - Using AnimatedButton for micro-animations (Requirements: 5.1, 5.3) */}
+          <motion.div
+            className="mt-10 flex flex-col items-center justify-center gap-5 sm:flex-row"
+            variants={itemVariants}
+          >
+            <AnimatedButton
+              variant="primary"
+              size="lg"
+              onClick={() => scrollToSection("projects")}
+              rightIcon={<ArrowRightIcon className="h-5 w-5 transition-transform group-hover:translate-x-1" />}
+              className="group min-w-[180px]"
+            >
+              View Projects
+            </AnimatedButton>
+            <AnimatedButton
+              variant="ghost"
+              size="lg"
+              onClick={() => scrollToSection("contact")}
+              className="min-w-[180px]"
+            >
+              Get in Touch
+            </AnimatedButton>
+          </motion.div>
+        </motion.div>
+      </ScrollReveal>
+
+      {/* Floating 3D background with parallax effects (Requirements: 4.2) */}
       <div
         className="absolute inset-0 -z-10 overflow-hidden"
         aria-hidden="true"
       >
+        {/* Floating 3D shapes */}
+        <FloatingBackground
+          parallaxIntensity={0.3}
+          className="opacity-60"
+        />
+        
+        {/* Decorative gradient background */}
         <div className="absolute left-1/2 top-0 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-3xl" />
         <div className="absolute bottom-0 right-0 h-[400px] w-[400px] translate-x-1/4 translate-y-1/4 rounded-full bg-primary/5 blur-3xl" />
       </div>

@@ -18,7 +18,8 @@ export interface CardProps extends HTMLMotionProps<"div"> {
 
 const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant = "default", hover = false, children, ...props }, ref) => {
-    const baseStyles = "rounded-lg border";
+    // Base styles with card class for dark mode glow effects (Requirements: 3.5)
+    const baseStyles = "rounded-lg border card transition-all";
 
     const variants = {
       default: "bg-card text-card-foreground border-border shadow-sm",

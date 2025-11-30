@@ -57,8 +57,9 @@ function SocialLinks({
           target={link.platform === "email" ? undefined : "_blank"}
           rel={link.platform === "email" ? undefined : "noopener noreferrer"}
           className={cn(
-            "text-muted-foreground transition-colors hover:text-foreground",
-            "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-sm"
+            "rounded-full p-2 text-muted-foreground transition-all duration-200",
+            "hover:text-foreground hover:bg-foreground/10",
+            "focus:outline-none focus-visible:text-foreground focus-visible:bg-foreground/10"
           )}
           aria-label={link.label}
           onClick={() => trackExternalLinkClick(link.url, "social")}
@@ -74,8 +75,9 @@ function SocialLinks({
           target="_blank"
           rel="noopener noreferrer"
           className={cn(
-            "text-muted-foreground transition-colors hover:text-foreground",
-            "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-sm"
+            "rounded-full p-2 text-muted-foreground transition-all duration-200",
+            "hover:text-foreground hover:bg-foreground/10",
+            "focus:outline-none focus-visible:text-foreground focus-visible:bg-foreground/10"
           )}
           aria-label="Download Resume (opens in new tab)"
           onClick={() => trackExternalLinkClick(resumeUrl, "resume")}
