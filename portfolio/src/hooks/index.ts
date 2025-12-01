@@ -21,3 +21,7 @@ export {
   type UseParallaxReturn,
 } from "./useParallax";
 export { useReducedMotion } from "./useReducedMotion";
+export {
+  useGsapScrollTrigger,
+  type UseGsapScrollTriggerOptions,
+} from "./useGsapScrollTrigger";
