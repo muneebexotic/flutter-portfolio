@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Children } from "react";
+import React from "react";
 import { motion, type Variants } from "framer-motion";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
