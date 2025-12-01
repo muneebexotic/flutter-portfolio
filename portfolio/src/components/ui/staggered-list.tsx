@@ -144,11 +144,6 @@ export function StaggeredList({
         },
       };
 
-  // Select item variants based on reduced motion preference
-  const selectedItemVariants = prefersReducedMotion
-    ? reducedMotionItemVariants
-    : itemVariants[animation];
-
   // Children are passed directly - they should have their own motion wrappers
   // This preserves grid/flex layout since we don't add extra wrapper divs
   const animatedChildren = children;
