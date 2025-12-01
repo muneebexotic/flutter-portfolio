@@ -121,10 +121,13 @@ const reducedMotionItemVariants: Variants = {
 export function StaggeredList({
   children,
   staggerDelay = 100,
-  animation = "fadeUp",
+  animation: _animation = "fadeUp",
   className = "",
   animateOnMount = true,
 }: StaggeredListProps) {
+  // Note: _animation is kept for API compatibility but not currently used
+  // as children handle their own animation variants
+  void _animation;
   const prefersReducedMotion = useReducedMotion();
 
   // Convert ms to seconds for Framer Motion
